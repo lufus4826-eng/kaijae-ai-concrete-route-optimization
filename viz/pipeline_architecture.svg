@@ -1,0 +1,166 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1120" width="800" height="1120">
+  <defs>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@500;600&amp;family=Prompt:wght@400;500;600;700&amp;display=swap');
+      
+      .bg { fill: #0b0f19; }
+      .text-title { font-family: 'Prompt', sans-serif; font-size: 22px; font-weight: 700; fill: #ffffff; text-anchor: middle; }
+      .text-subtitle { font-family: 'Prompt', sans-serif; font-size: 13px; font-weight: 500; fill: #38bdf8; text-anchor: middle; letter-spacing: 1px; }
+      
+      .card-bg { fill: #161b22; stroke: #30363d; stroke-width: 1.5; rx: 12; ry: 12; }
+      .card-bg-start { fill: #111a2e; stroke: #38bdf8; stroke-width: 1.5; rx: 12; ry: 12; }
+      .card-bg-step { fill: #161f30; stroke: #2563eb; stroke-width: 1.5; rx: 12; ry: 12; }
+      .card-bg-loop { fill: #1f1d16; stroke: #d97706; stroke-width: 1.5; stroke-dasharray: 4 4; rx: 12; ry: 12; }
+      .card-bg-eval { fill: #122321; stroke: #059669; stroke-width: 1.5; rx: 12; ry: 12; }
+      .card-bg-dec { fill: #241c10; stroke: #f59e0b; stroke-width: 2; rx: 16; ry: 16; }
+      .card-bg-pass { fill: #0e241b; stroke: #10b981; stroke-width: 1.5; rx: 10; ry: 10; }
+      .card-bg-fail { fill: #261b11; stroke: #f59e0b; stroke-width: 1.5; rx: 10; ry: 10; }
+      .card-bg-end { fill: #0d281e; stroke: #10b981; stroke-width: 2; rx: 12; ry: 12; }
+      
+      .pill-bg { rx: 6; ry: 6; }
+      .pill-blue { fill: #0369a1; }
+      .pill-purple { fill: #7e22ce; }
+      .pill-amber { fill: #b45309; }
+      .pill-green { fill: #047857; }
+      .pill-text { font-family: 'Prompt', sans-serif; font-size: 11px; font-weight: 600; fill: #ffffff; text-anchor: middle; }
+
+      .node-header { font-family: 'Prompt', sans-serif; font-size: 15px; font-weight: 600; fill: #f1f5f9; text-anchor: middle; }
+      .node-code { font-family: 'Fira Code', monospace; font-size: 13.5px; font-weight: 600; fill: #38bdf8; text-anchor: middle; }
+      .node-desc { font-family: 'Prompt', sans-serif; font-size: 13px; font-weight: 400; fill: #94a3b8; text-anchor: middle; }
+      .node-sub { font-family: 'Prompt', sans-serif; font-size: 12px; font-weight: 500; fill: #cbd5e1; text-anchor: middle; }
+      
+      .arrow { stroke: #38bdf8; stroke-width: 2; stroke-linecap: round; }
+      .arrow-amber { stroke: #f59e0b; stroke-width: 2; stroke-linecap: round; }
+      .arrow-green { stroke: #10b981; stroke-width: 2; stroke-linecap: round; }
+    </style>
+    
+    <marker id="arrowhead" markerWidth="8" markerHeight="8" refX="5" refY="4" orient="auto">
+      <polygon points="0 1, 6 4, 0 7" fill="#38bdf8" />
+    </marker>
+    <marker id="arrowhead-amber" markerWidth="8" markerHeight="8" refX="5" refY="4" orient="auto">
+      <polygon points="0 1, 6 4, 0 7" fill="#f59e0b" />
+    </marker>
+    <marker id="arrowhead-green" markerWidth="8" markerHeight="8" refX="5" refY="4" orient="auto">
+      <polygon points="0 1, 6 4, 0 7" fill="#10b981" />
+    </marker>
+  </defs>
+
+  <!-- Background -->
+  <rect width="800" height="1120" class="bg" />
+
+  <!-- Title -->
+  <text x="400" y="45" class="text-subtitle">KAIJAE AI · SYSTEM BLUEPRINT</text>
+  <text x="400" y="75" class="text-title">สถาปัตยกรรมการประมวลผล (Architecture Flowchart)</text>
+
+  <!-- Node 1: Start -->
+  <g transform="translate(160, 105)">
+    <rect width="480" height="60" class="card-bg-start" />
+    <text x="240" y="28" class="node-header">เริ่มต้น: <tspan class="node-code">solve.py</tspan> รับโฟลเดอร์ข้อมูลรายวัน</text>
+    <text x="240" y="48" class="node-desc">(Day Directory &amp; Master Data Configuration)</text>
+  </g>
+
+  <!-- Line 1 -> 2 -->
+  <line x1="400" y1="165" x2="400" y2="195" class="arrow" marker-end="url(#arrowhead)" />
+
+  <!-- Node 2: Step 1 -->
+  <g transform="translate(130, 195)">
+    <rect width="540" height="80" class="card-bg-step" />
+    <rect x="235" y="10" width="70" height="18" class="pill-bg pill-blue" />
+    <text x="270" y="23" class="pill-text">STEP 01</text>
+    <text x="270" y="46" class="node-code">correct_capacity_by_history()</text>
+    <text x="270" y="66" class="node-desc">คำนวณไลน์ผลิตจริงจาก plant_load_history.csv (ปรับ P05=2 ไลน์, P07=3 ไลน์ อัตโนมัติ)</text>
+  </g>
+
+  <!-- Line 2 -> 3 -->
+  <line x1="400" y1="275" x2="400" y2="305" class="arrow" marker-end="url(#arrowhead)" />
+
+  <!-- Node 3: Step 3 -->
+  <g transform="translate(110, 305)">
+    <rect width="580" height="75" class="card-bg-step" style="stroke: #a855f7;" />
+    <rect x="255" y="10" width="70" height="18" class="pill-bg pill-purple" />
+    <text x="290" y="23" class="pill-text">STEP 03</text>
+    <text x="290" y="45" class="node-code" style="fill: #c084fc;">generate_candidate_order_changes_by_conflict_check()</text>
+    <text x="290" y="64" class="node-desc">สร้างชุดทางเลือกการขอเลื่อนเวลาออเดอร์ (Scenarios) หลบช่วงพีคและเขตห้ามเข้า</text>
+  </g>
+
+  <!-- Line 3 -> 4 -->
+  <line x1="400" y1="380" x2="400" y2="410" class="arrow" marker-end="url(#arrowhead)" />
+
+  <!-- Node 4: Loop -->
+  <g transform="translate(150, 410)">
+    <rect width="500" height="60" class="card-bg-loop" />
+    <rect x="215" y="8" width="70" height="16" class="pill-bg pill-amber" />
+    <text x="250" y="20" class="pill-text">OPTIMIZE</text>
+    <text x="250" y="44" class="node-header" style="color: #fbbf24;">Loop ทดสอบทุกคู่: (Scenario เลื่อนออเดอร์) × (3 Profile การเดินรถ)</text>
+  </g>
+
+  <!-- Line 4 -> 5 -->
+  <line x1="400" y1="470" x2="400" y2="500" class="arrow" marker-end="url(#arrowhead)" />
+
+  <!-- Node 5: Step 2 -->
+  <g transform="translate(130, 500)">
+    <rect width="540" height="75" class="card-bg-step" />
+    <rect x="235" y="10" width="70" height="18" class="pill-bg pill-blue" />
+    <text x="270" y="23" class="pill-text">STEP 02</text>
+    <text x="270" y="45" class="node-code">schedule_by_actual_pour_greedy()</text>
+    <text x="270" y="65" class="node-desc">จัดตารางเดินรถด้วย Sim.preview() ระดับ 1 นาที + สงวนรถ ALL (V1)</text>
+  </g>
+
+  <!-- Line 5 -> 6 -->
+  <line x1="400" y1="575" x2="400" y2="605" class="arrow" marker-end="url(#arrowhead)" />
+
+  <!-- Node 6: Eval -->
+  <g transform="translate(100, 605)">
+    <rect width="600" height="75" class="card-bg-eval" />
+    <rect x="255" y="10" width="90" height="18" class="pill-bg pill-green" />
+    <text x="300" y="23" class="pill-text">SIMULATOR</text>
+    <text x="300" y="45" class="node-header" style="fill: #34d399;">วัดผลจริงด้วย Official Simulator: <tspan class="node-code" style="fill: #6ee7b7;">simulate() &amp; kpis()</tspan></text>
+    <text x="300" y="65" class="node-desc">จัดอันดับตาม: ไม่มี Error &gt; ผ่าน SLA &gt; จำนวนข้อ SLA &gt; กำไรสูงสุด &gt; ระยะทางต่ำสุด</text>
+  </g>
+
+  <!-- Line 6 -> 7 -->
+  <line x1="400" y1="680" x2="400" y2="710" class="arrow" marker-end="url(#arrowhead)" />
+
+  <!-- Node 7: Decision Diamond / Card -->
+  <g transform="translate(170, 710)">
+    <rect width="460" height="70" class="card-bg-dec" />
+    <text x="230" y="32" class="node-header" style="font-size: 16px; fill: #fde68a;">แผนที่ดีที่สุด ผ่าน SLA 100% หรือยัง?</text>
+    <text x="230" y="53" class="node-desc">(ตรวจสอบเกณฑ์ SLA ครบทุกข้อ: 14 เกณฑ์ใน Day 1–3 และ 12 เกณฑ์ใน Day 4)</text>
+  </g>
+
+  <!-- Fork lines from Decision -->
+  <!-- Left to Pass -->
+  <path d="M 285 780 L 285 810 L 250 810 L 250 830" class="arrow-green" fill="none" marker-end="url(#arrowhead-green)" />
+  <!-- Right to Fail -->
+  <path d="M 515 780 L 515 810 L 550 810 L 550 830" class="arrow-amber" fill="none" marker-end="url(#arrowhead-amber)" />
+
+  <!-- Branch Left: Pass -->
+  <g transform="translate(100, 830)">
+    <rect width="300" height="65" class="card-bg-pass" />
+    <text x="150" y="26" class="node-header" style="fill: #34d399; font-size: 14px;">✓ ผ่านแล้ว (Day 1–4 เข้ากรณีนี้ทั้งหมด)</text>
+    <text x="150" y="48" class="node-desc" style="font-size: 12px;">แผนงานสมบูรณ์ ไม่ต้องเปิดไลน์ผลิตเสริม</text>
+  </g>
+
+  <!-- Branch Right: Fallback (Step 4) -->
+  <g transform="translate(420, 830)">
+    <rect width="300" height="85" class="card-bg-fail" />
+    <text x="150" y="24" class="node-header" style="fill: #fbbf24; font-size: 13.5px;">✕ ยังไม่ผ่าน (สำรองสำหรับ Hidden Day 5)</text>
+    <text x="150" y="46" class="node-code" style="font-size: 11px; fill: #fde68a;">Step 4: generate_boost_candidates_by_bottleneck()</text>
+    <text x="150" y="68" class="node-desc" style="font-size: 11.5px;">ลองเปิดไลน์ผลิตเสริมเฉพาะโรงงานคอขวด แล้วรัน Step 2 ซ้ำ</text>
+  </g>
+
+  <!-- Connect Branches to Final Output -->
+  <path d="M 250 895 L 250 960 L 370 960" class="arrow-green" fill="none" />
+  <path d="M 570 915 L 570 960 L 430 960" class="arrow-amber" fill="none" />
+  <line x1="400" y1="960" x2="400" y2="985" class="arrow-green" marker-end="url(#arrowhead-green)" />
+
+  <!-- Node 9: Final Output -->
+  <g transform="translate(150, 985)">
+    <rect width="500" height="85" class="card-bg-end" />
+    <rect x="205" y="10" width="90" height="18" class="pill-bg pill-green" />
+    <text x="250" y="23" class="pill-text">FINAL OUTPUT</text>
+    <text x="250" y="47" class="node-header" style="fill: #34d399;">บันทึกไฟล์ผลลัพธ์:</text>
+    <text x="250" y="70" class="node-code" style="fill: #6ee7b7; font-size: 13px;">plan.csv, order_changes.csv, production_plan.csv</text>
+  </g>
+
+</svg>

@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>KAIJAE AI — Pipeline Architecture Flowchart</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@500;600&family=Prompt:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0b0f19;
+      --card-bg: rgba(22, 27, 34, 0.92);
+      --card-border: rgba(255, 255, 255, 0.1);
+      --accent-blue: #38bdf8;
+      --accent-green: #10b981;
+      --accent-purple: #a855f7;
+      --accent-amber: #f59e0b;
+      --accent-red: #f43f5e;
+      --text-main: #f1f5f9;
+      --text-sub: #94a3b8;
+      --font-th: 'Prompt', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-code: 'Fira Code', monospace;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg);
+      background-image: 
+        radial-gradient(circle at 50% 0%, rgba(56, 189, 248, 0.08) 0%, transparent 50%),
+        radial-gradient(circle at 80% 80%, rgba(16, 185, 129, 0.05) 0%, transparent 50%);
+      color: var(--text-main);
+      font-family: var(--font-th);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 40px 20px 80px;
+      min-height: 100vh;
+    }
+
+    .header-bar {
+      text-align: center;
+      margin-bottom: 35px;
+    }
+
+    .badge-top {
+      display: inline-block;
+      padding: 4px 14px;
+      background: rgba(56, 189, 248, 0.12);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      border-radius: 999px;
+      color: var(--accent-blue);
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 0.5px;
+      margin-bottom: 10px;
+    }
+
+    h1 {
+      font-size: 26px;
+      font-weight: 700;
+      color: #ffffff;
+      letter-spacing: -0.3px;
+    }
+
+    .diagram-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+      max-width: 680px;
+      position: relative;
+    }
+
+    /* Cards */
+    .node-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 14px;
+      padding: 16px 24px;
+      width: 100%;
+      text-align: center;
+      position: relative;
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.4), 0 0 1px 1px rgba(255, 255, 255, 0.05);
+      transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+      backdrop-filter: blur(8px);
+    }
+
+    .node-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 14px 30px -5px rgba(0, 0, 0, 0.6);
+    }
+
+    .node-card.start-node {
+      border-color: rgba(56, 189, 248, 0.4);
+      background: linear-gradient(180deg, rgba(56, 189, 248, 0.12) 0%, rgba(22, 27, 34, 0.95) 100%);
+    }
+
+    .node-card.step1 {
+      border-top: 3px solid var(--accent-blue);
+    }
+
+    .node-card.step3 {
+      border-top: 3px solid var(--accent-purple);
+    }
+
+    .node-card.loop-node {
+      border: 1px dashed rgba(245, 158, 11, 0.5);
+      background: rgba(245, 158, 11, 0.06);
+    }
+
+    .node-card.step2 {
+      border-top: 3px solid var(--accent-blue);
+      border-bottom: 1px solid rgba(56, 189, 248, 0.3);
+    }
+
+    .node-card.eval-node {
+      border-top: 3px solid var(--accent-green);
+      background: linear-gradient(180deg, rgba(16, 185, 129, 0.08) 0%, rgba(22, 27, 34, 0.95) 100%);
+    }
+
+    .node-card.decision-node {
+      border: 2px solid rgba(245, 158, 11, 0.7);
+      background: linear-gradient(135deg, rgba(245, 158, 11, 0.15) 0%, rgba(22, 27, 34, 0.95) 100%);
+      border-radius: 18px;
+      padding: 20px 24px;
+    }
+
+    .node-card.step4 {
+      border-top: 3px solid var(--accent-amber);
+      background: rgba(245, 158, 11, 0.05);
+    }
+
+    .node-card.end-node {
+      border: 1px solid rgba(16, 185, 129, 0.5);
+      background: linear-gradient(180deg, rgba(16, 185, 129, 0.15) 0%, rgba(22, 27, 34, 0.95) 100%);
+    }
+
+    /* Tag Pills */
+    .step-pill {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      padding: 2px 10px;
+      border-radius: 99px;
+      margin-bottom: 6px;
+    }
+
+    .pill-blue { background: rgba(56, 189, 248, 0.18); color: #7dd3fc; }
+    .pill-purple { background: rgba(168, 85, 247, 0.18); color: #d8b4fe; }
+    .pill-amber { background: rgba(245, 158, 11, 0.18); color: #fde68a; }
+    .pill-green { background: rgba(16, 185, 129, 0.18); color: #6ee7b7; }
+
+    .card-title {
+      font-size: 16px;
+      font-weight: 600;
+      color: #f8fafc;
+      margin-bottom: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+
+    .card-title code {
+      font-family: var(--font-code);
+      font-size: 14.5px;
+      color: #38bdf8;
+      background: rgba(56, 189, 248, 0.1);
+      padding: 1px 6px;
+      border-radius: 5px;
+    }
+
+    .card-desc {
+      font-size: 13.5px;
+      color: var(--text-sub);
+      line-height: 1.5;
+    }
+
+    .card-highlight {
+      font-size: 12.5px;
+      color: #cbd5e1;
+      margin-top: 6px;
+      background: rgba(255, 255, 255, 0.04);
+      padding: 4px 10px;
+      border-radius: 6px;
+      display: inline-block;
+    }
+
+    /* Connector Arrows */
+    .arrow-down {
+      width: 2px;
+      height: 30px;
+      background: linear-gradient(180deg, rgba(56, 189, 248, 0.5) 0%, rgba(56, 189, 248, 0.9) 100%);
+      position: relative;
+      margin: 0 auto;
+    }
+
+    .arrow-down::after {
+      content: '';
+      position: absolute;
+      bottom: -1px;
+      left: 50%;
+      transform: translateX(-50%);
+      border-left: 5px solid transparent;
+      border-right: 5px solid transparent;
+      border-top: 6px solid #38bdf8;
+    }
+
+    /* Branch Container */
+    .branch-container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      width: 100%;
+      margin: 0;
+      position: relative;
+    }
+
+    .branch-col {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .branch-label-pill {
+      font-size: 12px;
+      font-weight: 600;
+      padding: 4px 12px;
+      border-radius: 99px;
+      margin-bottom: 8px;
+    }
+
+    .label-pass {
+      background: rgba(16, 185, 129, 0.18);
+      color: #34d399;
+      border: 1px solid rgba(16, 185, 129, 0.3);
+    }
+
+    .label-fallback {
+      background: rgba(245, 158, 11, 0.18);
+      color: #fbbf24;
+      border: 1px solid rgba(245, 158, 11, 0.3);
+    }
+
+    .branch-card {
+      font-size: 13px;
+      padding: 12px 14px;
+      border-radius: 10px;
+      text-align: center;
+      width: 100%;
+    }
+
+    .pass-card {
+      background: rgba(16, 185, 129, 0.08);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      color: #a7f3d0;
+    }
+
+    .fallback-card {
+      background: rgba(245, 158, 11, 0.08);
+      border: 1px solid rgba(245, 158, 11, 0.3);
+      color: #fde68a;
+    }
+
+    /* Files chip list */
+    .files-list {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 8px;
+    }
+
+    .file-chip {
+      font-family: var(--font-code);
+      font-size: 12.5px;
+      background: rgba(16, 185, 129, 0.12);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      color: #6ee7b7;
+      padding: 4px 10px;
+      border-radius: 6px;
+    }
+
+    /* Print / Screenshot helper */
+    .action-bar {
+      margin-top: 30px;
+      display: flex;
+      gap: 12px;
+    }
+
+    .btn {
+      background: #1e293b;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: #fff;
+      font-family: var(--font-th);
+      font-size: 13px;
+      padding: 8px 18px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .btn:hover {
+      background: #334155;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="header-bar">
+    <div class="badge-top">KAIJAE AI · SYSTEM BLUEPRINT</div>
+    <h1>แผนผังสถาปัตยกรรมกระบวนการประมวลผล (Architecture Pipeline)</h1>
+  </div>
+
+  <div class="diagram-container">
+
+    <!-- Node 1: Start -->
+    <div class="node-card start-node">
+      <div class="card-title">
+        <span>เริ่มต้น:</span>
+        <code>solve.py</code>
+      </div>
+      <div class="card-desc">รับโฟลเดอร์ข้อมูลรายวัน (Day Directory & Master Data)</div>
+    </div>
+
+    <div class="arrow-down"></div>
+
+    <!-- Node 2: Step 1 -->
+    <div class="node-card step1">
+      <div class="step-pill pill-blue">Step 01</div>
+      <div class="card-title">
+        <code>correct_capacity_by_history()</code>
+      </div>
+      <div class="card-desc">คำนวณกำลังผลิตจริงจากสถิติใน <code>plant_load_history.csv</code></div>
+      <div class="card-highlight">ปรับ P05 = 2 ไลน์, P07 = 3 ไลน์ อัตโนมัติ (ขจัด Data Trap)</div>
+    </div>
+
+    <div class="arrow-down"></div>
+
+    <!-- Node 3: Step 3 -->
+    <div class="node-card step3">
+      <div class="step-pill pill-purple">Step 03</div>
+      <div class="card-title">
+        <code>generate_candidate_order_changes_by_conflict_check()</code>
+      </div>
+      <div class="card-desc">สร้างชุดทางเลือกการขอเลื่อนเวลาออเดอร์ (Scenarios) หลบช่วงพีคและเขตห้ามเข้า</div>
+    </div>
+
+    <div class="arrow-down"></div>
+
+    <!-- Node 4: Loop -->
+    <div class="node-card loop-node">
+      <div class="step-pill pill-amber">Optimization Loop</div>
+      <div class="card-title" style="color: #fbbf24;">
+        <span>ทดสอบจับคู่ทุกกรณี:</span>
+      </div>
+      <div class="card-desc" style="color: #fde68a;">
+        (Scenario เลื่อนออเดอร์) × (3 Profiles การเดินรถ)
+      </div>
+    </div>
+
+    <div class="arrow-down"></div>
+
+    <!-- Node 5: Step 2 -->
+    <div class="node-card step2">
+      <div class="step-pill pill-blue">Step 02</div>
+      <div class="card-title">
+        <code>schedule_by_actual_pour_greedy()</code>
+      </div>
+      <div class="card-desc">จัดตารางเดินรถด้วย <code>Sim.preview()</code> ระดับ 1 นาที พร้อมสงวนรถกลุ่ม ALL (V1)</div>
+    </div>
+
+    <div class="arrow-down"></div>
+
+    <!-- Node 6: Simulator Eval -->
+    <div class="node-card eval-node">
+      <div class="step-pill pill-green">Official In-Memory Simulator</div>
+      <div class="card-title" style="color: #34d399;">
+        <span>วัดผลจริงด้วย:</span>
+        <code>simulate()</code> & <code>kpis()</code>
+      </div>
+      <div class="card-desc" style="color: #cbd5e1;">
+        <strong>จัดอันดับตามเกณฑ์:</strong> ไม่มี Error &gt; ผ่าน SLA &gt; จำนวนข้อ SLA &gt; กำไรสูงสุด &gt; ระยะทางต่ำสุด
+      </div>
+    </div>
+
+    <div class="arrow-down"></div>
+
+    <!-- Node 7: Decision Diamond -->
+    <div class="node-card decision-node">
+      <div class="step-pill pill-amber">Decision Point</div>
+      <div class="card-title" style="font-size: 18px; color: #fff;">
+        แผนที่ดีที่สุด ผ่าน SLA 100% หรือยัง?
+      </div>
+      <div class="card-desc" style="color: #e2e8f0;">(ตรวจสอบสถานะผ่านเกณฑ์ทุกข้อตามกติกากรรมการ)</div>
+    </div>
+
+    <div class="arrow-down"></div>
+
+    <!-- Branches -->
+    <div class="branch-container">
+      
+      <!-- Branch Left: Pass -->
+      <div class="branch-col">
+        <div class="branch-label-pill label-pass">✓ ผ่านแล้ว</div>
+        <div class="branch-card pass-card">
+          <strong>Day 1–4 เข้ากรณีนี้ทั้งหมด</strong><br>
+          <span style="font-size: 12px; color: #94a3b8;">(ผ่านเกณฑ์ 100% สมบูรณ์ ไม่ต้องเปิดไลน์เสริม)</span>
+        </div>
+      </div>
+
+      <!-- Branch Right: Fallback / Not Pass -->
+      <div class="branch-col">
+        <div class="branch-label-pill label-fallback">✕ ยังไม่ผ่าน</div>
+        <div class="branch-card fallback-card">
+          <strong>สำรองสำหรับ Hidden Day 5</strong><br>
+          <span style="font-size: 12px; color: #94a3b8;">(ระบบสำรองอัจฉริยะเมื่อเจอวันลับที่ตึงตัว)</span>
+        </div>
+        
+        <div class="arrow-down" style="height: 18px; margin: 8px auto;"></div>
+
+        <!-- Node 8: Step 4 inside Fallback -->
+        <div class="node-card step4" style="padding: 10px 12px;">
+          <div class="step-pill pill-amber" style="font-size: 10px;">Step 04</div>
+          <div style="font-family: var(--font-code); font-size: 12.5px; color: #fde68a;">
+            <code>generate_boost_candidates_by_bottleneck()</code>
+          </div>
+          <div style="font-size: 11.5px; color: #cbd5e1; margin-top: 4px;">
+            เปิดไลน์เสริมเฉพาะโรงงานคอขวด แล้วรัน Step 2 ซ้ำ
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="arrow-down"></div>
+
+    <!-- Node 9: Output -->
+    <div class="node-card end-node">
+      <div class="step-pill pill-green">Final Outputs</div>
+      <div class="card-title" style="color: #34d399;">
+        บันทึกไฟล์ผลลัพธ์พร้อมส่งมอบ
+      </div>
+      <div class="files-list">
+        <span class="file-chip">plan.csv</span>
+        <span class="file-chip">order_changes.csv</span>
+        <span class="file-chip">production_plan.csv</span>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="action-bar">
+    <button class="btn" onclick="window.print()">🖨️ พิมพ์หรือบันทึกเป็น PDF</button>
+  </div>
+
+</body>
+</html>

@@ -1,0 +1,4 @@
+# AI Concrete — Team Submission Requirements
+# The solver is fully self-contained and implemented in Pure Python (Python 3.9+ standard library).
+# No external third-party packages are required to run solve.py or evaluate.py.
+# Standard library modules used: math, sys, os, csv, time, json, dataclasses
